@@ -1,0 +1,39 @@
+http://support.citrix.com/article/CTX127059?_ga=1.1106161.1925463164.1456874761
+
+- xsconsole
+
+- xe host-set-cpu-features features=000ce3bd-bfebfbff-00000001-20000800 uuid=<host_uuid>
+
+- xe host-eject
+
+- xe pool-eject host-uuid=9712025f-9b98-4c25-81ef-9222993b71f9
+
+- xe host-forget uuid=<host uuid> --force
+
+- xe host-cpu-info
+
+cpu_count                : 4
+                   vendor: GenuineIntel
+                    speed: 1866.734
+                modelname: Intel(R) Xeon(R) CPU           E5502  @ 1.87GHz
+                   family: 6
+                    model: 26
+                 stepping: 5
+                    flags: fpu de tsc msr pae mce cx8 apic sep mtrr mca cmov pat clflush acpi mmx fxsr sse sse2 ss ht nx constant_tsc pni vmx est ssse3 sse4_1 sse4_2 popcnt
+                 features: 009ce3bd-bfebfbff-00000001-28100800
+    features_after_reboot: 009ce3bd-bfebfbff-00000001-28100800
+        physical_features: 009ce3bd-bfebfbff-00000001-28100800
+                 maskable: full
+[host_b] # xe host-cpu-info
+cpu_count                : 4
+                   vendor: GenuineIntel
+                    speed: 2666.668
+                modelname: Intel(R) Xeon(R) CPU           X3353  @ 2.66GHz
+                   family: 6
+                    model: 23
+                 stepping: 6
+                    flags: fpu de tsc msr pae mce cx8 apic sep mtrr mca cmov pat clflush acpi mmx fxsr sse sse2 ss ht constant_tsc pni vmx est ssse3 sse4_1
+                 features: 000ce3bd-bfebfbff-00000001-20000800
+    features_after_reboot: 000ce3bd-bfebfbff-00000001-20000800
+        physical_features: 000ce3bd-bfebfbff-00000001-20000800
+                 maskable: base
