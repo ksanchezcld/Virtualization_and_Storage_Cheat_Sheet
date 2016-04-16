@@ -1,0 +1,269 @@
+- Proxmox-VE-Datasheet.pdf
+
+[OVERVIEW]
+
+Proxmox VE is a complete virtualization management solution for servers. You can virtualize even the most demanding application
+workloads running on Linux and Windows Servers. It combines the leading Kernel-based Virtual Machine (KVM) hypervisor and containerbased virtualization on one management platform. Thanks to the unique multi-master design there is no need for an additional management server. This saves ressources and also allows high availabilty without single point of failures (no SPOF).
+With the included web-based management you can easily control all functionality. Full access to all logs from all nodes in a cluster is included, including task logs like running backup/restore processes, live-migration
+or high availability (HA) triggered activities.
+
+[ENTERPRISE-READY]
+
+Proxmox VE includes all the functionality you need to deploy an enterprise-class virtualization environment in your company‘s
+datacenter. Multiple authentication sources combined with role based user- and permission management enable full control of your HA
+virtualization cluster. The RESTful web API enables easy integration for third party management tools like custom hosting environments. With the future-proof open source development model, your full access to the source code as well as maximum flexibility and security are guaranteed.
+
+[Industry-leading Enterprise Virtualization Technology]
+
+- Linux and Windows Servers, 32 and 64 bit operation systems.
+- Support for the latest Intel and AMD server chipsets for great VM performance.
+- Leading performance relative to bare metal for realworld enterprise workloads.
+- Management layer contains all the capabilities required to create and manage a virtual infrastructure.
+
+[Open Source Software]
+
+- Licensed under the free, copyleft GNU Affero General
+Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
+- Designed to ensure cooperation with community
+- Public code repository (GIT)
+- Bugtracker
+- Public community forum
+- Free Wiki for documention and HowTo´s
+
+[Integrated web-based Management GUI]
+
+- No need to install a separate management tool or any additional management node
+- Fast search-driven interface, capable of handling thousands of VM´s
+- Secure HTML5 VNC console, supporting SSL
+- Wizard based creation of virtual servers and containers
+- Seamless integration and management of Proxmox VE 4.x Cluster
+- Subscription management via GUI
+- Role based permission management for all objects (VM´s and CT´s, storages, etc.)
+- Support for multiple authentication sources (e.g. local, MS ADS, LDAP, ...)
+- AJAX technologies for dynamic updates of resources
+- Based on Ext JS JavaScript framework.
+- Cluster-wide Task and Cluster logs: The GUI shows all running tasks from the whole cluster but also the history and the syslog of each node. This includes running backup or restore jobs, live-migration or HA triggered activities
+
+[RESTful web API]
+
+- Easy integration for third party management tools like custom hosting enviroments
+- REST like API (JSON as primary data format, and the whole API is formally defined using JSON Schema)
+- Easy and human readable data format (native web browser format)
+- Automatic parameter verification (verification of return values)
+- Automatic generation of API documentation
+- Easy way to create command line tools (use the same API)
+- Resource Oriented Architecture (ROA)
+- Declarative API definition using JSON Schema
+
+[High Availability Cluster]
+
+- No single point of failure (no SPOF)
+- Mulit-master cluster (no single master)
+- GUI for managing KVM and container HA settings
+- pmxcfs—Proxmox VE Cluster File System: databasedriven file system for storing configuration files replicated in realtime on all nodes using Corosync
+- Based on proven Linux HA technologies, providing stable and reliable HA service
+- Resource agents for KVM and Linux Containers (LXC)
+- Watchdog based Fencing
+
+[Live Migration]
+
+- Moving QEMU virtual servers from one physical host to another without any downtime.
+
+[Fencing]
+
+- Proxmox VE HA Manger uses self fencing provided by hardware Watchdog or kernel Softdog
+- No simultaneous data access and corruption
+- Works „out-of-the-box“
+- Proxmox VE HA Simulator included for testing
+
+[Command Line Interface]
+
+- For advanced users
+- Manage all components of your virtual environment
+- CLI with intelligent tab completion and full UNIX man page documentation
+
+[Storage Types]
+
+- Local storage, ZFS, LVM with ext3/ext4, and XFS
+- Shared storage such as FC, iSCSI or NFS
+- Distributed storage such as Ceph RBD, Sheepdog, GlusterFS and DRBD9
+- Unlimited number of storage definitions (cluster-wide)
+
+[Multiple Authentication Sources]
+
+- Proxmox VE supports multiple authentication sources
+- Linux PAM standard authentication (e.g. 'root' and other local users)
+- Proxmox VE authentication server (built-in)
+- Microsoft Active Directory (MS ADS)
+- LDAP
+
+[Bridged Networking]
+
+- Bridged networking model
+- Each host with up to 4094 bridges
+- TCP/IP configuration
+- IPv4 and IPv6 support
+- VLANs
+- Open vSwitch
+
+- pvecm status
+- pvecm create <nombre_cluster>
+- pvecm add [ip_server_target]
+- pveversion
+- pveversion -v
+- corosync-cmapctl -g totem.interface.0.mcastaddr
+- omping srv1 srv2 srv3
+
+------------------
+ USB Installation
+------------------
+- dd if=proxmox-ve-4.1-e1f08ccd-6.iso of=/dev/sdb[usb_target] bs=1M  :: Copy the proxmox iso image to a flash usb drive.
+- Suse studio imagewritter
+
+--------------------
+ Host Configuration
+--------------------
+- /etc/hosts
+	- 10.0.0.200 pve-server01.dominio.local pve-server01
+
+- nano /etc/apt/sources.list
+	- deb http://ftp.at.debian.org/ wheezy main contrib
+	- deb http://download.proxmox/debian wheezy pve-no-subscription
+	- deb http://security.debian.org/ wheezy/updates main contrib
+
+- wget -O- "http://download.proxmox.com/debian/keys.asc" |apt-key add -
+
+- apt-get update && apt-get dist-upgrade
+
+- apt-get install pve-firmware pve-kernel-2.6.32-24-pve
+
+- apt-get install pve-headers-2.6.32-24-pve
+
+- apt-get remove linux-image-amd64 linux-image-3.2.0-4-amd64   :: To remove the SO Kernel.
+
+- update-grub
+
+- apt-get install proxmox-ve-2.6.32 ntp ssh lvm2 postfix ksm-control-daemon vzprocps open-iscsi bootlogd
+
+===========
+ Trainings
+===========
+
+[Training Content]
+
+The training course is comprised of several modules and practical lab exercises, covering deployment, setup, and configuration. The combination of theory and practice helps trainees build their knowledge and easily apply the concepts being discussed.
+
+Overview about Proxmox VE
+Concepts / Architecture / Technology (KVM and container)
+Requirements (Hardware, Storage, Network)
+Installation and Software updates
+Introduction to Web-based Management
+Network Model
+Storage Model
+Create and manage Virtual Machines (Windows & Linux)
+Create and manage Containers (Linux only)
+Manage VM/CT Startup and Shutdown behavior
+Backup and Restore, Scheduling
+Proxmox VE Cluster - Setup, configuration, management (basic and advanced)
+Live Migration
+Proxmox VE Firewall
+Authentication realms and user management
+CLI Tools
+VMID.conf
+pmxcfs - how to use the unique Proxmox database-driven file system for storing configuration files
+Troubleshooting
+High Availability with Proxmox VE HA Manager, and Fencing
+Advanced Storage
+Upcoming Features (Roadmap)
+Support offerings
+Practice
+
+[Proxmox VE Advanced]
+
+The training course is comprised of several modules and practical lab exercises, covering deployment, setup, and advanced configuration. The combination of theory and practice helps trainees build their knowledge and easily apply the concepts being discussed.
+
+Proxmox VE Cluster - Advanced setup, configuration, management
+Proxmox VE HA Manger and corosync
+pmxcfs - how to use the unique Proxmox database-driven file system for storing configuration files
+Authentication realms and user management - Advanced setup, configuration, management
+Two-Factor Authentication
+Troubleshooting
+Proxmox VE API
+High Availability and Fencing
+Advanced storage - distributed storage
+Upcoming Features (Roadmap)
+Support offerings
+Practice
+
+[Clases Espanol]
+
+ Clase 1 >> Introducción a la virtualización, modelos de virtualización y almacenamiento virtualizado Página
+ Clase 2 >> Instalación de Proxmox e inicios con OpenVZ
+ Clase 3 >> Gestión de Conjuntos, usuarios y permisos en Proxmox. Comandos y tips de OpenVZ, Inicio de KVM
+ Clase 4 >> Comandos KVM, instalación desde Debian y Backups
+ Clase 5 >> Backups, formato de imagenes, clonación / plantillas y creación del cluster
+ Clase 6 >> Migración de máquinas virtuales, modos caché y performance de almacenamiento (I) y conceptos de red en virtualización
+ Clase 7 >> Conceptos de almacenamiento, tipo de contenidos, almacenamiento tipo directorio, nfs y glusterfs
+ Clase 8 >> Almacenamiento distribuido: GlusterFS, iSCSI y DRBD
+Introducción a la Virtualización
+ Introducción
+ Modelos de Virtualización
+ Ventajas de Virtualizar
+ Hardware recomendado
+ Virtualización de almacenamiento
+ Virtualización con Software Libre
+Tipos de Virtualización en Proxmox
+ Containers
+ Openvz
+ Máquinas Virtuales
+ Kvm
+ Diferencias entre Openvz y Kvm
+ Infraestructuras virtuales
+Virtualización con Proxmox
+ Instalación de Proxmox 2
+ Instalación 'from scratch'
+ Instalación en un ISP
+ Securizando la instalación
+Trabajando con Kvm
+ Instalación de una Máquina Virtual
+ Fuente de Instalación
+ Tipos de almacenamiento
+ CPU y Memoria
+ Configuración de la red
+Operaciones Avanzadas con Kvm
+ Tipos de conexiones de Red
+ Tuneando KVM
+ Migrando a KVM
+ Passthrough de dispositivos
+ Duplicación de Maquinas Virtuales
+Trabajando con Openvz
+ Instalación de un Container
+ Configuraciones básicas
+ Gestionando recursos
+ Ventajas de virtualización en containers
+Operaciones Avanzadas con Openvz
+ Trabajando con templates
+ Creando un template
+ Comandos para administración en consola
+ Controlando recursos desde Consola
+ Modificando los recursos desde Consola
+Casos prácticos
+ Crear y configurar un Cluster Proxmox
+ Crear y configurar DRBD en Proxmox
+ Crear y configurar NFS en Proxmox
+ Crear y configurar Glusterfs en Proxmox
+Anexo: Conceptos teóricos de gnu/linux
+ Diferencias entre un usuario normal y el administrador
+ Editor de texto Vi
+ Tareas programadas
+
+
+- https://www.proxmox.com/en/training/pve-bundle
+- https://www.proxmox.com/en/training/pve-advanced
+- https://openwebinars.net/cursos/curso-online-de-virtualizacion-de-servidores/?ref=landing-cursos-box
+- https://www.youtube.com/watch?v=2qjtpwuMFuI
+- Web: http://www.proxmox.com
+- Wiki Proxmox VE: http://pve.proxmox.com/wiki
+- Roadmap: http://pve.proxmox.com/wiki/Roadmap
+- Downloads: http://www.proxmox.com/downloads
+- https://plus.google.com/+proxmox

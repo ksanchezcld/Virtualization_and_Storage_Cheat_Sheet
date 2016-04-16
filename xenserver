@@ -1,16 +1,24 @@
+Citrix XenServer is available in multiple editions, including a free edition.  The Free XenServer edition has no limits on the number of VMs which can be run on it, and includes production grade features like shared storage, resource pools, centralized management and live migration of VMs between hosts in a pool.  When you first install Free XenServer, a 30 day trial license is included.  If you wish to continue to use XenServer after this 30 day period, you will need to either obtain a premium license, or activate your Free XenServer.  
+
 http://support.citrix.com/article/CTX127059?_ga=1.1106161.1925463164.1456874761
 
 - xsconsole
+
+- xe host-get-cpu-features :: Find the CPU info features.
 
 - xe host-set-cpu-features features=000ce3bd-bfebfbff-00000001-20000800 uuid=<host_uuid>
 
 - xe host-eject
 
+- xe pool-join  :: join a server to the pool. 
+
+- xe host-reset-cpu-features :: To return a server with masked CPU features back to its normal capabilities
+
 - xe pool-eject host-uuid=9712025f-9b98-4c25-81ef-9222993b71f9
 
 - xe host-forget uuid=<host uuid> --force
 
-- xe host-cpu-info
+- xe host-cpu-info :: Shows the CPU server Info.
 
 cpu_count                : 4
                    vendor: GenuineIntel
@@ -37,3 +45,15 @@ cpu_count                : 4
     features_after_reboot: 000ce3bd-bfebfbff-00000001-20000800
         physical_features: 000ce3bd-bfebfbff-00000001-20000800
                  maskable: base
+
+
+[URLS]
+    http://docs.vmd.citrix.com/XenServer/5.6.0/1.0/en_gb/reference.html?_ga=1.32063742.1925463164.1456874761#hetpool
+
+----------
+Licensing
+---------- 
+- https://www.citrix.com/account/toolbox/manage-licenses/overview.html
+- https://www.youtube.com/watch?v=uCZ5QB5ffbg
+- https://activate.vmd.citrix.com/
+- https://www.youtube.com/watch?v=AzqE3v39B68&ebc=ANyPxKpqyXZKSEEdQJ5eHVs3m5_u-MOzlhnQdRTkFKnViSwhu0Rezd7mU0SH9bchtRKJ4Jlk9gs_80Gmpcyq2kO_Zm7kJMKjFw
