@@ -1,0 +1,7 @@
+http://www.drbd.org/en
+
+Storage is one of the most critical components in any cloud environment. It has to be easy to provision, highly reliable, cost effective and ideally running on commodity hardware.
+
+The principal goal of a high availability solution is to minimize or mitigate the impact of downtime.
+
+The principal goal of disaster recovery is to restore your systems and data to a previous state in the event of a failure or loss of a location.

@@ -89,13 +89,14 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - Distributed storage such as Ceph RBD, Sheepdog, GlusterFS and DRBD9
 - Unlimited number of storage definitions (cluster-wide)
 
-[Multiple Authentication Sources]
+[Backup and Restore]
 
-- Proxmox VE supports multiple authentication sources
-- Linux PAM standard authentication (e.g. 'root' and other local users)
-- Proxmox VE authentication server (built-in)
-- Microsoft Active Directory (MS ADS)
-- LDAP
+- Full backups of containers and VMs
+- Live Snapshot Backups
+- Multiple schedules and backup storages
+- GUI integrations, but also via CLI
+- "Backup Now" and restore via GUI
+- All jobs from all nodes can be monitored via the GUI tab “Tasks”
 
 [Bridged Networking]
 
@@ -106,6 +107,42 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - VLANs
 - Open vSwitch
 
+[Multiple Authentication Sources]
+
+- Proxmox VE supports multiple authentication sources
+- Linux PAM standard authentication (e.g. 'root' and other local users)
+- Proxmox VE authentication server (built-in)
+- Microsoft Active Directory (MS ADS)
+- LDAP
+
+[Role-based Administration]
+
+- User- and permission management for all objects (VM´s, storages, nodes, etc.)
+- A role is simply a list of privileges. Proxmox VE comes with a number of predefined roles which satisfies most needs. The whole set of predefined roles can be seen on the GUI.
+- Permissions are the way to control access to objects. In technical terms they are simply a triple containing <path,user,role>. This concept is also known as access control lists. Each permission specifies a subject (user or group) and a role (set of privileges) on a specific path. 
+
+[VM Templates and Clones]
+
+- Deploying virtual machines from templates is blazing fast, very comfortable and if you use linked clones you can optimize your storage by using base images and thin-provisioning.
+- Linked and Full Clones
+
+[Two-Factor Authentication]
+
+- For high security
+- 2 types: Time-based One Time Passwords and YubiKey
+
+[Proxmox VE Firewall]
+
+- Linux-based netfilter technology. Stateful firewall. Provides high bandwith.
+- Distributed: Main configuration in Proxmox VE cluster file system, iptable rules stored in nodes.
+- Supports IPv4 and IPv6
+- Cluster-wide settings
+- 3 levels of configuration (datacenter, host, VM/CT)
+- Completely customizable allowing complex configurations via GUI or CLI
+- Quick setup with predefined macros
+
+[Commands]
+
 - pvecm status
 - pvecm create <nombre_cluster>
 - pvecm add [ip_server_target]
@@ -113,7 +150,62 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - pveversion -v
 - corosync-cmapctl -g totem.interface.0.mcastaddr
 - omping srv1 srv2 srv3
+- clustat - Cluster Status Utility
+- clusvcadm - Cluster User Service Administration Utility
+- ccs_config_validate - validate cluster.conf file
+- fence_tool - a utility for the fenced daemon
+- fence_node - a utility to run fence agents
+- fence_ack_manual - a utility to manually manage fencing using /bin/false
 
+-----------
+ Templates
+-----------
+
+A template is a fully pre-configured operating system image that can used to deploy KVM virtual machines.
+
+Deploying virtual machines from templates is blazing fast, very comfortable and if you use linked clones you can optimize your storage by using base images and thin-provisioning.
+
+Proxmox VE includes container based templates since 2008 and beginning with the V3.x series, additionally KVM templates can be created and deployed. 
+
+- VM - KVM based virtual machine
+- Templates - Templates are pre-configured operating system environments that deploy in a couple of clicks
+- Linked Clone - A linked clone VM requires less disk space but cannot run without access to the base VM Template
+- Full Clone - A full clone VM is a complete copy and is fully independant to the original VM or VM Template, but requires the same disk space as the original. 
+
+[ Create VM Template ]
+
+Templates are created by converting a VM to a template.
+
+ - Install your VM with all drivers and needed software packages
+ - Remove all user data, passwords and keys - In order to do this run sysprep on Windows or similar tools or scripts on Linux and just power-off the VM.
+ - Right-click the VM and select "Convert to template" 
+
+As soon as the VM is converted, it cannot be started anymore and the icon changes. If you want to modify an existing template, you need to deploy a full clone from this template and do the steps above again. 
+
+--------------
+ Cache Types
+--------------
+cache=none seems to be the best performance and is the default since Proxmox 2.X.
+
+- Standard
+- Directsync
+- Write through
+- Write back
+- Write back (insecure)
+- None
+
+-------------
+ Bus/Device
+-------------
+- VIRTIO
+- 
+
+--------
+ Format
+--------
+- QEMU
+-
+-
 ------------------
  USB Installation
 ------------------
@@ -257,6 +349,7 @@ Anexo: Conceptos teóricos de gnu/linux
  Editor de texto Vi
  Tareas programadas
 
+[INFO]
 
 - https://www.proxmox.com/en/training/pve-bundle
 - https://www.proxmox.com/en/training/pve-advanced
@@ -267,3 +360,7 @@ Anexo: Conceptos teóricos de gnu/linux
 - Roadmap: http://pve.proxmox.com/wiki/Roadmap
 - Downloads: http://www.proxmox.com/downloads
 - https://plus.google.com/+proxmox
+- http://www.proxmox.com/en/downloads
+- http://pve.proxmox.com/wiki/High_Availability_Cluster
+- http://pve.proxmox.com/wiki/High_Availability_Cluster#Certified_Configurations_and_Examples
+- https://pve.proxmox.com/wiki/Performance_Tweaks
