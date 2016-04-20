@@ -1,5 +1,9 @@
 - Proxmox-VE-Datasheet.pdf
 
+Path to upload templates :: /var/lib/vz/template/cache
+Path where ISOs resides :: /var/lib/vz/template/iso
+Path cat /etc/pve/qemu-server/108.conf
+
 [OVERVIEW]
 
 Proxmox VE is a complete virtualization management solution for servers. You can virtualize even the most demanding application
@@ -141,13 +145,15 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - Completely customizable allowing complex configurations via GUI or CLI
 - Quick setup with predefined macros
 
-[Commands]
+[Create the Cluster] - [https://pve.proxmox.com/wiki/Proxmox_VE_2.0_Cluster]
 
+- pvecm create <cluster_name>
 - pvecm status
-- pvecm create <nombre_cluster>
-- pvecm add [ip_server_target]
+- pvecm add [ip_server_target]      :: Adding node to the Cluster.
 - pveversion
 - pveversion -v
+- pvecm nodes     					:: Display nodes of the Cluster.
+- pvecm delnode hp2					:: Removes a cluster Node.
 - corosync-cmapctl -g totem.interface.0.mcastaddr
 - omping srv1 srv2 srv3
 - clustat - Cluster Status Utility
@@ -156,6 +162,8 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - fence_tool - a utility for the fenced daemon
 - fence_node - a utility to run fence agents
 - fence_ack_manual - a utility to manually manage fencing using /bin/false
+
+
 
 -----------
  Templates
@@ -237,6 +245,85 @@ cache=none seems to be the best performance and is the default since Proxmox 2.X
 
 - apt-get install proxmox-ve-2.6.32 ntp ssh lvm2 postfix ksm-control-daemon vzprocps open-iscsi bootlogd
 
+
+==============================
+HTTPSCertificateConfiguration
+==============================
+
+
+
+----------
+ PVE Logs
+----------
+- journalctl -b -u pveproxy.service
+
+===============
+ Storage Model
+===============
+
+-> https://pve.proxmox.com/wiki/Storage_Model
+
+Proxmox VE is using a very flexible storage model. Virtual machine images can be stored on local storage (and more than one local storage type is supported) as well as on shared storage like NFS and on SAN.
+
+You may configure as many storage definitions as you like!
+
+One major benefit of storing VMs on shared storage is the ability to live-migrate running machines without any downtime, as all nodes in the cluster have direct access to VM disk images.
+
+Note: OpenVZ containers must be on local storage or NFS.
+
+The following storage types can be added via the web interface.
+
+--------------------------------
+Network storage types supported
+--------------------------------
+- LVM Group (network backing with iSCSI targets)
+- iSCSI target
+- NFS Share
+- Direct to iSCSI LUN
+- GLusterFS
+- RBD/Ceph
+- Sheepdog (still not stable, so please do not use it in production environments.)
+
+--------------------------------
+ Local storage types supported
+--------------------------------
+- LVM Group (local backing devices like block devices, FC devices, DRBD, etc.)
+- Directory (storage on existing filesystem)
+- ZFS local pool (beta state, available since Proxmox VE 3.4)
+
+some storage types have only one possible use, which is available as soon as you define the storage entry, you don't need to specify, ie:
+
+- iSCSI: this storage is either used directly (Note: this can be dangerous, see further down), or as a base to define local LVM storage entries (see further down), or as ZFS, it needs a portal address and a target ID
+
+- LVM: this storage type is only used to store RAW VM disk images, and first needs an iSCSI "base storage" entry defined or local disks prepared as LVM storage.
+
+- ZFS over iSCSI: this storage type is only used to store RAW VM disk images, and first needs an iSCSI "base storage" entry defined. (available since Proxmox VE 3.2)
+
+- ZFS: this storage type is used to store RAW VM disk images, but can also be used as a directory. (available since Proxmox VE 3.4)
+
+- RBD/Ceph: this storage type is only used to store RAW VM disk images, and needs a working "Monitor host"
+
+- Sheepdog: this storage type is only used to store RAW VM disk images, and needs a working "portal" (still not stable, so please do not use it in production environments.)
+
+- Images: to store working VM (kvm) disk images
+this will create a ./images folder on the filesystem
+./images will have a folder for each VM containing disks on this storage - used/unused disks in file formats qcow2, vmdk, RAW. etc and also qcow2 snapshots diff files if created - named by its VMID
+
+- ISO: to store .iso files to use in VM virtual cd drives
+this will create a ./template/iso folder on the filesystem
+./template/iso will contain all ".iso" files uploaded to this storage, available in the web gui for the VMs´ ISO selection for virtual cd/dvd drives. Not available for CTs.
+
+- Templates: to store CT (openvz) templates
+this will create a ./template/cache folder on the filesystem
+./template/cache will contain all ".tar.gz" files uploaded to this storage, available in the web gui to create a new CT from such templates.
+
+- Backups: to store VM/CT backups
+this will create a ./dump folder on the filesystem
+./dump will contain all backup files (currently .vma.lzo or .vma.gz depending on backup settings) and, for each backup file, a related .log file.
+
+- Containers: to store working CT (openvz) disk images (file and folders directly on the storage filesystem)
+this will create a ./private folder on the filesystem,
+./private will contain a folder for each CT defined on this storage, named by its VMID, containing the whole local CT filesystem.
 ===========
  Trainings
 ===========
@@ -348,6 +435,13 @@ Anexo: Conceptos teóricos de gnu/linux
  Diferencias entre un usuario normal y el administrador
  Editor de texto Vi
  Tareas programadas
+
+ [Appliance Downloads]
+
+ - http://download.proxmox.com/appliances/system/
+ - http://openvztemplates.com/
+ - http://download.openvz.org/template/precreated/contrib/
+ - http://download.proxmox.com/images/system/
 
 [INFO]
 

@@ -1,0 +1,25 @@
+NexentaStor is our flagship Open Source-driven Software-Defined Storage (OpenSDS) platform, enabling thousands of customers all around the world to evolve their storage infrastructure, increase flexibility and agility, simplify management and dramatically reduce costs, without compromising on availability, reliability or functionality.
+
+NexentaStor delivers unified file (NFS and SMB) and block (FC and iSCSI) storage services, runs on industry standard hardware, scales from tens of terabytes to petabyte configurations, and includes all data management functionality by default. NexentaStor is Open Source-driven Software-Defined Storage with SMARTS: Security, Manageability, Availability, Reliability, (lower) TCO, and Scalability.
+
+Benefits
+Dramatically lower storage costs for Cloud and Enterprise workloads
+Eliminate lock-in with 100% software deployed on industry standard hardware
+Simple swap-in replacement of legacy block and file storage appliances
+Partner certified Reference Architectures for ease of deployment and support
+One software stack for all-disk, hybrid and all-flash storage configurations
+Proven Open Source-driven Software-Defined Storage with more than 1 Exabyte deployed to date
+Functionality
+Unified File (NFS and SMB) and Block (FC and iSCSI) services
+Built on ZFS for Enterprise-grade data integrity, scale and performance
+Scales from 10’s of Terabytes to Petabytes
+Unlimited file system sizes
+Inline data reduction for additional storage cost savings
+Unlimited space optimized snapshots and clones
+Periodic asynchronous long distance replication
+Target Use Cases
+VMware cloud backend storage
+OpenStack and CloudStack backend storage
+Generic NAS file services and Home Directory storage
+Near-line archive and large scale backup repositories
+Multi-Site Continuous Availability with Nexenta MetroHA

@@ -1,0 +1,43 @@
+
+ZFS is a combined file system and logical volume manager designed by Sun Microsystems. Starting with Proxmox VE 3.4, the native Linux kernel port of the ZFS filesystem is introduced as optional file-system and also as an additional selection for the root file-system. There is no need for manually compiling ZFS, all packages are included (for both kernel branches, 2.6.32 and 3.10).
+
+By using ZFS, its possible to achieve maximal enterprise features with low budget hardware but also high performance systems by leveraging SSD caching or even SSD only setups. ZFS can replace cost intense hardware raid cards by moderate CPU and memory load combined with easy management.
+
+In the first release, there are two ways to use ZFS on Proxmox VE:
+
+as an local directory, supports all storage content types (instead of ext3 or ext4)
+as zvol block-storage, currently supporting kvm images in raw format (new ZFS storage plugin)
+The advantage of zvol is the snapshot capability on fs-level (fast)
+
+-----------------------
+General ZFS advantages
+-----------------------
+- Easy configuration and management with Proxmox VE GUI and CLI. 
+- Reliable
+- Protection against data corruption
+- Data compression on file-system level
+- Snapshots
+- Copy-on-write clone
+- Various raid levels: RAID0, RAID1, RAID10, RAIDZ-1, RAIDZ-2 and RAIDZ-3
+- Can use SSD for cache
+- Self healing
+- Continuous integrity checking
+- Designed for high storage capacities
+- Protection against data corruption
+- Asynchrony replication over network
+- Open Source
+- Encryption
+
+ZFS depends heavily on memory, so you need at least 4GB to start. In practice, use as much you can get for your hardware/budget. To prevent data corruption, the use of high quality ECC RAM is very recommended.
+
+If you use a dedicated cache and/or log disk, you should use a enterprise class SSD (e.g. Intel SSD DC S3700 Series). This can increase the overall performance quite significantly.
+
+----------------
+ Importan Notes 
+----------------
+
+If you are experimenting with an installation of Proxmox inside a VM (Nested_Virtualization), don't use Virtio for disks of that VM, since are not supported by ZFS, use IDE or SCSI (it's ok also with Virtio type contorller) instead.
+
+IMPORTANT: Do not use zfs on top of hardware controller which has it's own cache management. Zfs needs to directly communicate with disks, an HBA adapter is the way to go (or something like LSI controller flashed in 'IT' mode).
+
+https://pve.proxmox.com/wiki/Storage:_ZFS

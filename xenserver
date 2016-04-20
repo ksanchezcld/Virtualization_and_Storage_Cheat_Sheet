@@ -2,6 +2,18 @@ Citrix XenServer is available in multiple editions, including a free edition.  T
 
 http://support.citrix.com/article/CTX127059?_ga=1.1106161.1925463164.1456874761
 
+[ What types of local storage can be used with XenServer? ]
+
+XenServer supports local storage such as SATA and SAS. 
+
+[ What type of SAN/NAS storage can be used with XenServer? ]
+
+XenServer supports Fibre Channel, Hardware-based iSCSI (HBA), iSCSI, and NFS are supported. Refer to
+the XenServer 6.5 Administrator’s Guide and the XenServer Hardware Compatibility List (HCL) for more
+details.
+
+[Commands]
+
 - xsconsole
 
 - xe host-get-cpu-features :: Find the CPU info features.
@@ -57,8 +69,16 @@ cpu_count                : 4
 
 ----------
 Licensing
----------- 
+----------
+- XenServer_6.5.0_Technical_FAQ.pdf 
+- http://support.citrix.com/article/CTX141511#ref2
+- http://support.citrix.com/article/CTX200159#Configure CLSVA
+- http://support.citrix.com/article/CTX200159
 - https://www.citrix.com/account/toolbox/manage-licenses/overview.html
+- http://video.citrix.com/tv/#videos/108
 - https://www.youtube.com/watch?v=uCZ5QB5ffbg
+- https://www.youtube.com/watch?v=WBMBA_AVC5w&nohtml5=False
+- https://www.youtube.com/watch?v=ynFOxhyGjbE
+- https://www.youtube.com/watch?v=kw_WHSnjbR0
 - https://activate.vmd.citrix.com/
 - https://www.youtube.com/watch?v=AzqE3v39B68&ebc=ANyPxKpqyXZKSEEdQJ5eHVs3m5_u-MOzlhnQdRTkFKnViSwhu0Rezd7mU0SH9bchtRKJ4Jlk9gs_80Gmpcyq2kO_Zm7kJMKjFw
