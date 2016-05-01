@@ -2,7 +2,15 @@
 
 Path to upload templates :: /var/lib/vz/template/cache
 Path where ISOs resides :: /var/lib/vz/template/iso
-Path cat /etc/pve/qemu-server/108.conf
+Path where Raw Images resides :: /var/lib/vz/images/
+Path cat /etc/pve/qemu-server/108.
+
+:: UPLOAD ISO IMAGES WITH SCP ::
+
+- scp -v xss_and_mysql_file_i386.iso root@10.0.0.200:/var/lib/vz/template/iso
+- scp -v * root@10.0.0.200:/var/lib/vz/template/iso
+
+- pveversion -v :: to see the Proxmox Version
 
 [OVERVIEW]
 
@@ -145,10 +153,39 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - Completely customizable allowing complex configurations via GUI or CLI
 - Quick setup with predefined macros
 
-[Create the Cluster] - [https://pve.proxmox.com/wiki/Proxmox_VE_2.0_Cluster]
+[Create the Cluster] - [https://pve.proxmox.com/wiki/Proxmox_VE_4.x_Cluster]
+
+Proxmox VE 4.x (and all versions above) cluster enables central management of multiple physical servers. A Proxmox VE Cluster consists of several nodes (up to 32 physical nodes, probably more, dependent on network latency).
+
+[Main features]
+
+- Centralized web management, including secure console
+- Support for multiple authentication sources (e.g. local, MS ADS, LDAP, ...)
+- Role based permission management for all objects (VM´s, storages, nodes, etc.)
+- Creates multi-master clusters
+- Proxmox Cluster file system (pmxcfs): Database-driven file system for storing configuration files, replicated in real-time on all nodes using corosync (maximal size 30 MB)
+- Migration of Virtual Machines between physical hosts
+- Cluster-wide logging
+- RESTful web API
+- Self-fencing as out of the box method (also possible to use power- or network-fencing).
+- Fast deployment
+- Cluster-wide Firewall
+- Linux Container migration
+
+NOTE: 
+
+- It is not possible to mix Proxmox VE 3.x and earlier with Proxmox VE 4.0 cluster
+- All nodes must be in the same network as corosync uses IP Multicast to communicate between nodes 
+- Some switches do not support IP multicast by default and must be manually enabled first.
+- Date and time have to be synchronized.
+- SSH tunnel on port 22 between nodes is used.
+- If you are interested in High Availability too, for reliable quorum you must have at least 3 active nodes at all times
+- If shared storage is used a dedicated NIC for the traffic is needed.
+
+[Commands]
 
 - pvecm create <cluster_name>
-- pvecm status
+- pvecm status    :: To see the status of a cluster
 - pvecm add [ip_server_target]      :: Adding node to the Cluster.
 - pveversion
 - pveversion -v
@@ -163,6 +200,9 @@ Public License, version 3 (AGPL, V3: http://www.gnu.org/licenses/agpl-3.0.html)
 - fence_node - a utility to run fence agents
 - fence_ack_manual - a utility to manually manage fencing using /bin/false
 
+- systemctl status corosync.service
+- corosync-cmapctl 
+- corosync-quorumtool
 
 
 -----------
@@ -217,12 +257,14 @@ cache=none seems to be the best performance and is the default since Proxmox 2.X
 ------------------
  USB Installation
 ------------------
+
 - dd if=proxmox-ve-4.1-e1f08ccd-6.iso of=/dev/sdb[usb_target] bs=1M  :: Copy the proxmox iso image to a flash usb drive.
 - Suse studio imagewritter
 
 --------------------
  Host Configuration
 --------------------
+
 - /etc/hosts
 	- 10.0.0.200 pve-server01.dominio.local pve-server01
 
@@ -246,15 +288,28 @@ cache=none seems to be the best performance and is the default since Proxmox 2.X
 - apt-get install proxmox-ve-2.6.32 ntp ssh lvm2 postfix ksm-control-daemon vzprocps open-iscsi bootlogd
 
 
-==============================
-HTTPSCertificateConfiguration
-==============================
+===============================
+ HTTPSCertificateConfiguration
+===============================
 
+- mkdir /etc/pve/.le
+- cd /root/acme-master
+- ./acme.sh --install --accountconf /etc/pve/.le/account.conf --accountkey /etc/pve/.le/account.key --accountemail "ksanchez@myemail.com"
 
+Check the config file in /etc/pve/.le/account.conf and verify:
+
+the ACCOUNT_EMAIL variable should be set to your email address
+the ACCOUNT_KEY_PATH variable should be set to "/etc/pve/.le/account.key"
+You can edit this file with your favourite text editor if either of those is incorrect.
+
+- acme.sh --issue --standalone --keypath /etc/pve/local/pveproxy-ssl.key --fullchainpath /etc/pve/local/pveproxy-ssl.pem --reloadcmd "systemctl restart pveproxy" -d colorapp.local
+
+- systemctl restart pveproxy  :: Restart the Web Interface
 
 ----------
  PVE Logs
 ----------
+
 - journalctl -b -u pveproxy.service
 
 ===============
@@ -276,6 +331,7 @@ The following storage types can be added via the web interface.
 --------------------------------
 Network storage types supported
 --------------------------------
+
 - LVM Group (network backing with iSCSI targets)
 - iSCSI target
 - NFS Share
@@ -287,6 +343,7 @@ Network storage types supported
 --------------------------------
  Local storage types supported
 --------------------------------
+
 - LVM Group (local backing devices like block devices, FC devices, DRBD, etc.)
 - Directory (storage on existing filesystem)
 - ZFS local pool (beta state, available since Proxmox VE 3.4)
@@ -324,11 +381,60 @@ this will create a ./dump folder on the filesystem
 - Containers: to store working CT (openvz) disk images (file and folders directly on the storage filesystem)
 this will create a ./private folder on the filesystem,
 ./private will contain a folder for each CT defined on this storage, named by its VMID, containing the whole local CT filesystem.
-===========
- Trainings
-===========
 
-[Training Content]
+[SSL CERTIFICATES]
+
+:: Let's Encrypt using acme.sh :: 
+
+-  pveversion
+- git clone https://github.com/Neilpang/acme.sh.git
+- mkdir /etc/pve/.le
+- cd /root/acme-master
+- ./acme.sh --install --accountconf /etc/pve/.le/account.conf --accountkey /etc/pve/.le/account.key --accountemail "$EMAIL"
+- Check the config file in /etc/pve/.le/account.conf and verify:
+	- the ACCOUNT_EMAIL variable should be set to your email address
+	- the ACCOUNT_KEY_PATH variable should be set to "/etc/pve/.le/account.key"
+- journalctl -b -u pveproxy.service
+
+-> https://pve.proxmox.com/wiki/HTTPSCertificateConfiguration
+
+
+::: force remove a node from proxmox node tree :::
+
+- rm -rf /etc/pve/nodes/HOSTNAME
+
+::: How to reset cluster configuration in Proxmox ::: 
+
+-> https://elkano.org/blog/how-to-reset-cluster-configuration-in-proxmox-2/
+
+- cp -a /etc/pve /root/pve_backup
+- /etc/init.d/pve-cluster stop
+- umount /etc/pve
+- /etc/init.d/cman stop 
+- rm /etc/cluster/cluster.conf
+- rm -rf /var/lib/pve-cluster/*
+- /etc/init.d/pve-cluster start
+- pvecm create newcluster 
+- cp /root/pve_backup/*.cfg /etc/pve/
+- cp /root/pve_backup/qemu-server/*.conf /etc/pve/qemu-server/
+- cp /root/pve_backup/openvz/* /etc/pve/openvz/
+- rm -rf /etc/pve/nodes/HOSTNAME
+
+================
+ Network Model
+================
+
+Proxmox VE uses a bridged networking model. Each host can have up to 4094 bridges. Bridges are like physical network switches implemented in software on the Proxmox VE host. All VMs can share one bridge as if virtual network cables from each guest were all plugged into the same switch. For connecting VMs to the outside world, bridges are attached to physical network cards assigned a TCP/IP configuration. For further flexibility, VLANs (IEEE 802.1q) and network bonding/aggregation are possible. In this way it is possible to build complex, flexible virtual networks.
+
+Changes are stored to /etc/network/interfaces.new, and are activated when you reboot the host. Actual configuration resides in /etc/network/interfaces.
+
+The installation program creates a single bridge (vmbr0), which is connected to the first ethernet card (eth0).
+
+-> https://pve.proxmox.com/wiki/Network_Model
+
+====================
+ Trainings Content
+====================
 
 The training course is comprised of several modules and practical lab exercises, covering deployment, setup, and configuration. The combination of theory and practice helps trainees build their knowledge and easily apply the concepts being discussed.
 
