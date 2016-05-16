@@ -430,6 +430,10 @@ Changes are stored to /etc/network/interfaces.new, and are activated when you re
 
 The installation program creates a single bridge (vmbr0), which is connected to the first ethernet card (eth0).
 
+Virtual machines behave as if they were directly connected to the physical network. The network, in turn, sees each virtual machine as having its own MAC, even though there is only one network cable connecting all of these VMs to the network.
+
+
+
 -> https://pve.proxmox.com/wiki/Network_Model
 
 ====================
